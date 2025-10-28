@@ -9,6 +9,7 @@ import (
 	"encoding/pem"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -30,8 +31,14 @@ type DisposeRequest struct {
 
 // --- Main Setup ---
 func main() {
+	// Get Redis address from environment variable, default to redis:6379
+	redisAddr := os.Getenv("REDIS_ADDR")
+	if redisAddr == "" {
+		redisAddr = "redis:6379"
+	}
+
 	rdb = redis.NewClient(&redis.Options{
-		Addr: "redis:6379", // 'redis' is the Docker service name
+		Addr: redisAddr,
 	})
 
 	router := gin.Default()

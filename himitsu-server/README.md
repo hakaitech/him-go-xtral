@@ -90,6 +90,11 @@ MQTT broker for message passing. Configured with:
 - ACL file for topic restrictions
 - Persistence enabled
 
+**⚠️ SECURITY WARNING**: The current MQTT configuration allows anonymous access and permits anyone to publish/subscribe to any message under `himitsu/messages/#`. This configuration is **FOR DEVELOPMENT ONLY** and must be secured before production deployment. Consider implementing:
+- Username/password authentication
+- Client certificate authentication
+- More restrictive ACL rules (e.g., pattern-based per-user topics)
+
 ## Testing
 
 Test the API endpoints:
