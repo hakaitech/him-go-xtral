@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  api:
+    build:
+      context: ./api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/app
+    depends_on:
+      - redis
+    environment:
+      # Gin run mode
+      - GIN_MODE=release
+      # Redis address (using Docker service name)
+      - REDIS_ADDR=redis:6379
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mosquitto:
+    build:
+      context: ./mosquitto
+    ports:
+      - "1883:1883"
+      # - "8883:8883" # Uncomment for MQTTS
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+volumes:
+  redis_data:
+  mosquitto_data:
+  mosquitto_log:
